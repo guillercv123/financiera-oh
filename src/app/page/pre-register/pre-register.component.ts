@@ -23,8 +23,10 @@ export class PreRegisterComponent {
   continueRegister(){
     const data = this.preregisterFomPresenter.preregisterForm.value;
     if(this.userStorageService.isEmailRegistered(data.email)){
-      showToaster("Advertencia", "El correo ya esta registrado", "warning");
-      this.router.navigate(['login']);
+      showToaster('Advertencia','El correo ya esta registrado','warning');
+      setTimeout(() => {
+        this.router.navigate(['login']);
+      }, 500);
     } else {
       this.router.navigate(['register', data.email]);
     }
