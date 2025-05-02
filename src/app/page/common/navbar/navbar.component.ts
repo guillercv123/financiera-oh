@@ -1,14 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
-import { NgIf} from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import {CloseOnClickOutsideDirective} from '../../../common/directive/close-on-click-outside.directive';
 import {CookiesService} from '../../../common/services/cookies.service';
+import {AuthService} from '../../../common/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     CloseOnClickOutsideDirective,
     NgIf,
+    NgClass,
   ],
   animations: [
     trigger('fadeInOut', [
@@ -25,12 +27,17 @@ export class NavbarComponent implements OnInit {
   showRecentMenu = false;
   showCrearMenu = false;
   email: string | null | undefined;
+  isMobileMenuOpen = false;
 
-  constructor(private cookies: CookiesService,) {
+  constructor(private cookies: CookiesService, private auth:AuthService) {
   }
   ngOnInit() {
       const token = this.cookies.getCookie('authToken');
       this.email = this.cookies.getUserFromToken(token);
+  }
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   toggleMenu() {
@@ -53,5 +60,9 @@ export class NavbarComponent implements OnInit {
 
   closeMenu() {
     this.isMenuOpen = false;
+  }
+
+  signOut(){
+    this.auth.logout();
   }
 }

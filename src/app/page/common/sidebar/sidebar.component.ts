@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
-import {SvgIconComponent} from 'angular-svg-icon';
-import {FaIconComponent} from '@fortawesome/angular-fontawesome';
+import {CookiesService} from '../../../common/services/cookies.service';
 
 interface Workspace {
   id: string;
@@ -13,7 +12,6 @@ interface Workspace {
 interface MenuItem {
   icon: string;
   label: string;
-  route?: string;
 }
 @Component({
   selector: 'app-sidebar',
@@ -24,7 +22,7 @@ interface MenuItem {
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   workspaces: Workspace[] = [
     {
       id: '1',
@@ -39,16 +37,47 @@ export class SidebarComponent {
       expanded: false
     }
   ];
-
+  userEmail: string | null = "";
   menuItems: MenuItem[] = [
-    { icon: 'fas fa-table-columns', label: 'boards', route: '/boards' },
-    { icon: 'fas fa-heart', label: 'highlights', route: '/highlights' },
+    { icon: 'fas fa-table-columns', label: 'boards' },
+    { icon: 'fas fa-heart', label: 'highlights'},
     { icon: 'fas fa-eye', label: 'views' },
-    { icon: 'fas fa-user', label: 'users', route: '/users' },
-    { icon: 'fa fa-gear', label: 'settings', route: '/settings' }
+    { icon: 'fas fa-user', label: 'users' },
+    { icon: 'fa fa-gear', label: 'settings' }
   ];
+  constructor(private cookies: CookiesService) {
+
+  }
+  ngOnInit() {
+    const users = JSON.parse(<string>localStorage.getItem('users'));
+    this.workspaces = users.map((user:any) => {
+      return {
+        id: "1",
+        name: user.email,
+        initial: this.getAbreviation(user.fullName),
+        expanded: false
+      }
+    });
+
+    const token = this.cookies.getCookie('authToken');
+    this.userEmail = this.cookies.getUserFromToken(token);
+  }
+
+  getAbreviation(fullName: string): string| undefined {
+    const nameParts = fullName.trim().split(' ');
+    if (nameParts.length === 0 || !fullName.trim()) {
+      return undefined;
+    }
+    let abbreviation = '';
+    abbreviation += nameParts[0][0].toUpperCase();
+    for (let i = 1; i < nameParts.length; i++) {
+      abbreviation += nameParts[i][0].toUpperCase();
+    }
+    return abbreviation;
+  }
 
   toggleExpand(workspace: Workspace): void {
     workspace.expanded = !workspace.expanded;
   }
+
 }
