@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
-import {NgIf} from '@angular/common';
+import { trigger, style, transition, animate } from '@angular/animations';
+import { NgIf} from '@angular/common';
 import {CloseOnClickOutsideDirective} from '../../../common/directive/close-on-click-outside.directive';
 
 @Component({
   selector: 'app-navbar',
   imports: [
     CloseOnClickOutsideDirective,
-    NgIf
+    NgIf,
   ],
   animations: [
     trigger('fadeInOut', [
@@ -20,9 +20,26 @@ import {CloseOnClickOutsideDirective} from '../../../common/directive/close-on-c
 })
 export class NavbarComponent {
   isMenuOpen = false;
+  showWorkspaceMenu = false;
+  showRecentMenu = false;
+  showCrearMenu = false;
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleDropdown(menu: 'workspace' | 'recent' | 'crear') {
+    this.closeAll();
+    if (menu === 'workspace') this.showWorkspaceMenu = !this.showWorkspaceMenu;
+    if (menu === 'recent') this.showRecentMenu = !this.showRecentMenu;
+    if (menu === 'crear') this.showCrearMenu = !this.showCrearMenu;
+
+  }
+
+  closeAll() {
+    this.showWorkspaceMenu = false;
+    this.showRecentMenu = false;
+    this.showCrearMenu = false;
   }
 
   closeMenu() {

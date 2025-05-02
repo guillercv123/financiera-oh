@@ -19,9 +19,54 @@
         </div>
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-            <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white hover:cursor-pointer" aria-current="page">Workspace</a>
-            <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white hover:cursor-pointer">Recent</a>
-            <a class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white hover:cursor-pointer">Crear</a>
+
+            <div class="relative">
+              <button (click)="toggleDropdown('workspace')" class="dropdown-toggle flex items-center space-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white">
+                <span>Workspace</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                class="dropdown-menu absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10"
+                [@fadeInOut]
+                *ngIf="showWorkspaceMenu"
+                ohCloseOnClickOutside
+                (clickOutside)="showWorkspaceMenu = false"
+              >
+                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 1</a>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button (click)="toggleDropdown('recent')" class="dropdown-toggle flex items-center space-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white">
+                <span>Recent</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                class="dropdown-menu absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10"
+                [@fadeInOut]
+                *ngIf="showRecentMenu"
+                ohCloseOnClickOutside
+                (clickOutside)="showRecentMenu = false"
+              >
+                <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 1</a>
+              </div>
+            </div>
+
+            <div class="relative">
+              <button (click)="toggleDropdown('crear')" class="dropdown-toggle flex items-center space-x-1 rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-blue-300 hover:text-white">
+                <span>Crear</span>
+                <i class="fas fa-chevron-down text-xs"></i>
+              </button>
+              <div
+                class="dropdown-menu absolute left-0 mt-2 w-40 bg-white rounded-md shadow-lg z-10"
+                [@fadeInOut]
+                *ngIf="showCrearMenu"
+                ohCloseOnClickOutside
+                (clickOutside)="showCrearMenu = false"
+              >
+                <a  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Project 1</a>
+              </div>
+            </div>
             <a class="rounded-md bg-blue-300 px-3 py-2 text-sm font-medium text-white hover:cursor-pointer">Prueba</a>
           </div>
         </div>
