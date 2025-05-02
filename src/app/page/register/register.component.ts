@@ -5,7 +5,6 @@ import {showToaster} from '../../common/utils/notification.utils';
 import {IRegisterUser, IUser} from '../../common/types/user.interface';
 import {UserStorageService} from '../../common/services/user-storage.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {filter, map, take} from 'rxjs';
 
 @Component({
   selector: 'app-register',
