@@ -19,6 +19,19 @@ export class CookiesService {
     return btoa(JSON.stringify(payload));
   }
 
+  getUserFromToken(token: string | null): string | null {
+    try {
+      let decoded = "";
+      if (token != null) {
+         decoded = atob(token);
+      }
+      const payload = JSON.parse(decoded);
+      return payload.user || null;
+    } catch (error) {
+      return null;
+    }
+  }
+
   setCookie(name: string, value: string, minutes: number) {
     const date = new Date();
     date.setTime(date.getTime() + minutes * 60 * 1000);

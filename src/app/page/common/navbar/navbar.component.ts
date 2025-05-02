@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { NgIf} from '@angular/common';
 import {CloseOnClickOutsideDirective} from '../../../common/directive/close-on-click-outside.directive';
+import {CookiesService} from '../../../common/services/cookies.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,11 +19,19 @@ import {CloseOnClickOutsideDirective} from '../../../common/directive/close-on-c
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   isMenuOpen = false;
   showWorkspaceMenu = false;
   showRecentMenu = false;
   showCrearMenu = false;
+  email: string | null | undefined;
+
+  constructor(private cookies: CookiesService,) {
+  }
+  ngOnInit() {
+      const token = this.cookies.getCookie('authToken');
+      this.email = this.cookies.getUserFromToken(token);
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;

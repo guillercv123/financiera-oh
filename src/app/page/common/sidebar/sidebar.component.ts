@@ -42,7 +42,7 @@ export class SidebarComponent {
 
   menuItems: MenuItem[] = [
     { icon: 'fas fa-table-columns', label: 'boards', route: '/boards' },
-    { icon: 'fas fa-bookmark', label: 'highlights', route: '/highlights' },
+    { icon: 'fas fa-heart', label: 'highlights', route: '/highlights' },
     { icon: 'fas fa-eye', label: 'views' },
     { icon: 'fas fa-user', label: 'users', route: '/users' },
     { icon: 'fa fa-gear', label: 'settings', route: '/settings' }

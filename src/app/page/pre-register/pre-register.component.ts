@@ -26,9 +26,7 @@ export class PreRegisterComponent {
       showToaster("Advertencia", "El correo ya esta registrado", "warning");
       this.router.navigate(['login']);
     } else {
-      this.router.navigate(['register'], {
-        queryParams: { email: data.email }
-      });
+      this.router.navigate(['register', data.email]);
     }
   }
 }
