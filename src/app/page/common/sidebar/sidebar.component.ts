@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NgForOf, NgIf} from '@angular/common';
 import {CookiesService} from '../../../common/services/cookies.service';
+import {animate, style, transition, trigger} from '@angular/animations';
 
 interface Workspace {
   id: string;
@@ -18,6 +19,18 @@ interface MenuItem {
   imports: [
     NgForOf,
     NgIf,
+  ],
+  animations: [
+    trigger('expandCollapse', [
+      transition(':enter', [
+        style({ height: '0', opacity: 0, overflow: 'hidden' }),
+        animate('200ms ease-out', style({ height: '*', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        style({ overflow: 'hidden' }),
+        animate('200ms ease-in', style({ height: '0', opacity: 0 }))
+      ])
+    ])
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
@@ -45,22 +58,21 @@ export class SidebarComponent implements OnInit {
     { icon: 'fas fa-user', label: 'users' },
     { icon: 'fa fa-gear', label: 'settings' }
   ];
-  constructor(private cookies: CookiesService) {
+  constructor(private cookies: CookiesService) {}
 
-  }
   ngOnInit() {
     const users = JSON.parse(<string>localStorage.getItem('users'));
+    const token = this.cookies.getCookie('authToken');
+    this.userEmail = this.cookies.getUserFromToken(token);
     this.workspaces = users.map((user:any) => {
       return {
         id: "1",
         name: user.email,
         initial: this.getAbreviation(user.fullName),
-        expanded: false
+        expanded: user.email === this.userEmail,
       }
     });
 
-    const token = this.cookies.getCookie('authToken');
-    this.userEmail = this.cookies.getUserFromToken(token);
   }
 
   getAbreviation(fullName: string): string| undefined {
@@ -76,8 +88,11 @@ export class SidebarComponent implements OnInit {
     return abbreviation;
   }
 
-  toggleExpand(workspace: Workspace): void {
-    workspace.expanded = !workspace.expanded;
+  toggleExpand(selectedWorkspace: Workspace): void {
+    this.workspaces.forEach(workspace => {
+      workspace.expanded = (workspace === selectedWorkspace) ? !workspace.expanded : false;
+    });
+    this.userEmail = selectedWorkspace.name;
   }
 
 }
