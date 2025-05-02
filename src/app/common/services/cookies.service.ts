@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+interface TokenPayload {
+  user: string;
+  exp: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +36,34 @@ export class CookiesService {
       }
     }
     return null;
+  }
+
+  deleteCookie(name: string) {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  }
+
+  decodeToken(token: string): TokenPayload | null {
+    try {
+      const json = atob(token);
+      return JSON.parse(json) as TokenPayload;
+    } catch {
+      return null;
+    }
+  }
+
+  isTokenValid(name = 'authToken'): boolean {
+    const token = this.getCookie(name);
+    if (!token) return false;
+
+    const payload = this.decodeToken(token);
+    if (!payload) return false;
+
+    return Date.now() < payload.exp;
+  }
+
+  clearToken(name = 'authToken'): boolean {
+    const had = !!this.getCookie(name);
+    this.deleteCookie(name);
+    return had;
   }
 }

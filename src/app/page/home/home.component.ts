@@ -17,10 +17,5 @@ export class HomeComponent implements OnInit {
   }
   ngOnInit() {
     const token = this.cookieService.getCookie('authToken');
-    if (token) {
-      console.log('Token encontrado:', token);
-    } else {
-      console.log('Token no encontrado o expirado');
-    }
   }
 }
